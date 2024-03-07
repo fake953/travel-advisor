@@ -13,7 +13,7 @@ const App = () => {
   const [places, setPlaces] = useState([]);
   const [childClicked, setChildClicked] = useState(null);
   const [scroll, setScroll] = useState(null);
-  const [type, setType] = useState("restaurants");
+  const [type, setType] = useState(null);
   const [floorReting, setFloorRating] = useState(0);
   const [filterdPlaces, setFilterdPlaces] = useState(null);
   // useEffect(() => {
@@ -26,10 +26,12 @@ const App = () => {
   useEffect(() => {
     console.log({ floorReting });
     const result = places?.filter((place) => place.rating > floorReting);
-    console.log({ result });
+    console.log(result);
     setFilterdPlaces(result);
   }, [floorReting]);
   useEffect(() => {
+    if (!type) setType("restaurants");
+    console.log(type);
     setLoading(true);
     GetApi(type, Bounds.ne, Bounds.sw).then((data) => {
       setPlaces(data);
@@ -45,7 +47,7 @@ const App = () => {
             setFloorRating={setFloorRating}
             floorReting={floorReting}
             setType={setType}
-            places={filterdPlaces ? filterdPlaces : places}
+            places={filterdPlaces || places}
             childClicked={childClicked}
             loading={loading}
             type={type}
@@ -57,7 +59,7 @@ const App = () => {
           <Map
             setScroll={setScroll}
             setChildClicked={setChildClicked}
-            places={filterdPlaces ? filterdPlaces : places}
+            places={filterdPlaces || places}
             setCoordinets={setCoordinets}
             setBounds={setBounds}
             coordinets={coordinets}

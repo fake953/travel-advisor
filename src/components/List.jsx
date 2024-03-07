@@ -10,16 +10,6 @@ const List = ({
   setFloorRating,
   floorReting,
 }) => {
-  const handelTypeChange = (value) => {
-    if (value !== type) {
-      setType(value);
-    }
-  };
-  const handelFloorReting = (value) => {
-    if (value !== floorReting) {
-      setFloorRating(value);
-    }
-  };
   return (
     <div className="overflow-auto max-h-screen ">
       {loading ? (

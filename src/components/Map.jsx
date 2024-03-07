@@ -8,6 +8,7 @@ export const Map = ({
   setChildClicked,
   setScroll,
 }) => {
+  console.log(places);
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <GoogleMapReact
