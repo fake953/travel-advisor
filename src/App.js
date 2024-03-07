@@ -8,8 +8,14 @@ const App = () => {
     lat: 51.509865,
     lng: -0.118092,
   });
+  const [loading, setLoading] = useState(false);
   const [Bounds, setBounds] = useState({});
   const [places, setPlaces] = useState([]);
+  const [childClicked, setChildClicked] = useState(null);
+  const [scroll, setScroll] = useState(null);
+  const [type, setType] = useState("restaurants");
+  const [floorReting, setFloorRating] = useState(0);
+  const [filterdPlaces, setFilterdPlaces] = useState(null);
   // useEffect(() => {
   //   navigator.geolocation.getCurrentPosition(
   //     ({ coords: { latitude, longitude } }) => {
@@ -18,21 +24,40 @@ const App = () => {
   //   );
   // });
   useEffect(() => {
-    console.log(coordinets, Bounds);
-    GetApi(Bounds.ne, Bounds.sw).then((data) => {
+    console.log({ floorReting });
+    const result = places?.filter((place) => place.rating > floorReting);
+    console.log({ result });
+    setFilterdPlaces(result);
+  }, [floorReting]);
+  useEffect(() => {
+    setLoading(true);
+    GetApi(type, Bounds.ne, Bounds.sw).then((data) => {
       setPlaces(data);
+      setLoading(false);
     });
-    console.log(places);
-  }, [coordinets, Bounds]);
+  }, [coordinets, Bounds, type]);
   return (
     <div className="w-full h-screen">
       <Header />
       <div className="grid grid-cols-12 w-screen">
         <div className="col-span-12 md:col-span-4 ">
-          <List places={places} />
+          <List
+            setFloorRating={setFloorRating}
+            floorReting={floorReting}
+            setType={setType}
+            places={filterdPlaces ? filterdPlaces : places}
+            childClicked={childClicked}
+            loading={loading}
+            type={type}
+            setScroll={setScroll}
+            scroll={scroll}
+          />
         </div>
         <div className="col-span-12 md:col-span-8 ">
           <Map
+            setScroll={setScroll}
+            setChildClicked={setChildClicked}
+            places={filterdPlaces ? filterdPlaces : places}
             setCoordinets={setCoordinets}
             setBounds={setBounds}
             coordinets={coordinets}

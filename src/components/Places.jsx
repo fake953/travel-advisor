@@ -1,7 +1,18 @@
-const Place = ({ place }) => {
-  console.log(place)
+import { useEffect, useRef } from "react";
+
+const Place = ({ place, scroll, setScroll }) => {
+  const refProp = useRef();
+  useEffect(() => {
+    if (place === scroll) {
+      refProp?.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [scroll, place]);
+
   return (
-    <div className="my-4 mx-4 min-h-40 overflow-hidden shadow-lg rounded-md text-gray-500 ">
+    <div
+      className="my-4 mx-4 min-h-40 overflow-hidden shadow-lg text-gray-500 "
+      ref={refProp}
+    >
       <img
         className="w-full h-46 text-gray-600 object-cover"
         src={
@@ -13,31 +24,35 @@ const Place = ({ place }) => {
       />
       <div className="m-3 ">
         <h1 className="text-2xl  ">{place.name}</h1>
+        <div className="text-xl my-2 flex justify-between ">
+          <span>{place.rating}</span>
+          <span>out of {place.num_reviews} reviews</span>
+        </div>
         <div className="flex justify-between my-1 text-lg">
           <span>price</span>
           <span>{place.price_level}</span>
         </div>
-        <div className="flex justify-between my-1 text-lg">
+        <div className="flex justify-between my-1 text-sm ">
           <span>Ranking</span>
           <span>{place.ranking} </span>
         </div>
         <div className="m-2">
           {place?.awards?.map((award) => (
-            <div className="flex justify-between my-2 text-lg">
+            <div className="flex justify-between my-2 text-sm">
               <img src={award.images.small} alt={award.display_name} />
               <span>{award.display_name}</span>
             </div>
           ))}
         </div>
         <div>
-          {/* {place?.cuisine?.map(({name})=>(
-            <span className="py-1 px-2 m-3 bg-gray-200 rounded-full ">
-            {name}
-          </span>
-          ))} */}
+          {place?.cuisine?.map(({ name }) => (
+            <span className="py-1 px-2 m-3 my-5 bg-gray-200 rounded-full text-md ">
+              {name}
+            </span>
+          ))}
         </div>
         {place?.address && (
-          <div className="flex justify-between my-1 text-lg">
+          <div className="flex justify-between my-1 text-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -54,7 +69,7 @@ const Place = ({ place }) => {
           </div>
         )}
         {place?.phone && (
-          <div className="flex justify-between my-1 text-lg">
+          <div className="flex justify-between my-1 text-md">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
